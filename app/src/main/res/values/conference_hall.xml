@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="conference_hall">
+        <item>select conference hall</item>
+        <item>hall1</item>
+        <item>hall2</item>
+        <item>hall3</item>
+        <item>hall4</item>
+    </string-array>
+
+</resources>
