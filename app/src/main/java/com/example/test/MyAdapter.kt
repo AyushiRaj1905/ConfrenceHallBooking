@@ -1,13 +1,84 @@
 package com.example.test
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 
+class MyAdapter(val  context: Context, val userList: List<Property>): RecyclerView.Adapter<MyAdapter.ViewHolder>() {
+
+    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+
+        var Booking_ID:TextView
+
+        var booking_date:TextView
+
+        var Booking_Details:TextView
+
+        var Booking_Purpose:TextView
+
+
+
+
+        init {
+
+            Booking_ID=itemView.findViewById(R.id.Booking_ID)
+
+            booking_date=itemView.findViewById(R.id.booking_date)
+
+            Booking_Details=itemView.findViewById(R.id.Booking_Details)
+
+            Booking_Purpose=itemView.findViewById(R.id.Booking_Purpose)
+
+
+
+        }
+
+
+
+    }
+
+
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+
+        var itemView=LayoutInflater.from(context).inflate(R.layout.list_item,parent,false)
+
+        return ViewHolder(itemView)
+
+    }
+
+
+
+    override fun getItemCount(): Int {
+
+        return  userList.size
+
+    }
+
+
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
+        holder.Booking_ID.text=userList[position].Booking_Id.toString()
+
+        holder.booking_date.text=userList[position].Booking_Date.toString()
+
+        holder.Booking_Details.text=userList[position].Booked_Details.toString()
+
+        holder.Booking_Purpose.text=userList[position].Booked_Purpose.toString()
+
+    }
+
+
+
+
+
+}
+
+/*
 class MyAdapter(private val data: List<Property>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>()  {
 
     class MyViewHolder(val view: View): RecyclerView.ViewHolder(view){
@@ -39,4 +110,4 @@ class MyAdapter(private val data: List<Property>) : RecyclerView.Adapter<MyAdapt
     }
 
 
-}
+}*/
