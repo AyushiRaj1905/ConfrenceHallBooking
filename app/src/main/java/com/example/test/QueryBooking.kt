@@ -3,6 +3,8 @@ package com.example.test
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +14,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.newFixedThreadPoolContext
 import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
@@ -33,6 +36,9 @@ class QueryBooking : AppCompatActivity() {
 private  lateinit var apiService:ApiService;
     private lateinit var displaybookingId:TextView;
 lateinit var  mRecyclerView: RecyclerView
+lateinit var mQueryBookingButton:Button;
+    lateinit var mEditTextStartDate:EditText;
+    lateinit var mEditTextEndDate: EditText;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_query_booking)
@@ -42,11 +48,75 @@ lateinit var  mRecyclerView: RecyclerView
         mRecyclerView.layoutManager=linearLayoutManager;
         //manager = LinearLayoutManager(this)
         displaybookingId= findViewById(R.id.textView26);
+        mQueryBookingButton=findViewById(R.id.button_query_booking);
+        mEditTextStartDate= findViewById(R.id.edit_text_start_date);
+        mEditTextEndDate= findViewById(R.id.edit_text_end_date);
 
 
-        getAllApiRoomData()
-       // getInternetData()
+
+
     }
+
+    override fun onStart() {
+        super.onStart()
+        mQueryBookingButton.setOnClickListener{
+            val startDate = mEditTextStartDate.text.toString().trim()
+            val endDate = mEditTextEndDate.text.toString().trim()
+
+            if (isValidInput(startDate, endDate)) {
+                performQueryBooking(startDate, endDate)
+            }
+            else{
+                Log.d("Validation error", "Enter formated date ");
+                Toast.makeText(this@QueryBooking,"Please Enter date in correct format",Toast.LENGTH_LONG).show();
+
+            }
+        }
+    }
+    private fun isValidInput(startDate: String, endDate: String): Boolean {
+        val dateFormat = "\\d{2}-\\d{2}-\\d{4}".toRegex()
+
+        if (!startDate.matches(dateFormat) || !endDate.matches(dateFormat)) {
+            // Date format is incorrect
+            return false
+        }
+
+        return true
+    }
+
+    private fun performQueryBooking(startDate: String, endDate: String) {
+        val retrofitBuilder = Retrofit.Builder()
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(BASE_URL)
+            .build()
+        val apiService = retrofitBuilder.create(ApiService::class.java)
+
+
+        val mQueryBookingDate = QueryBookingDate(startDate, endDate)
+
+        val call= apiService.postQueryFetchRequest(mQueryBookingDate);
+        call.enqueue(object : Callback<List<Property>?> {
+            override fun onResponse(call: Call<List<Property>?>, response: Response<List<Property>?>) {
+                val responseBody = response.body()!!
+                Log.d("Response data",responseBody.toString());
+                myAdapter=MyAdapter(baseContext,responseBody)
+                myAdapter.notifyDataSetChanged()
+                mRecyclerView.adapter=myAdapter;
+                Log.d("Response", "Success post");
+                //Toast.makeText(this@QueryBooking,responseBody.toString(),Toast.LENGTH_LONG).show();
+
+                //findViewById<RecyclerView>(R.id.recycler_view).adapter=myAdapter
+
+            }
+
+            override fun onFailure(call: Call<List<Property>?>, t: Throwable?) {
+                if (t != null) {
+                    Log.d("retrofit", "call failed"+t.message)
+                }
+                Toast.makeText(this@QueryBooking,"Api Call error",Toast.LENGTH_LONG).show();
+
+            }
+        })    }
 
     private fun getAllApiRoomData() {
         val retrofitBuilder = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
@@ -66,7 +136,7 @@ lateinit var  mRecyclerView: RecyclerView
                 }
 
 
-                displaybookingId.text= str;
+
                 Log.d("Response", response.toString());
                 Toast.makeText(this@QueryBooking,str,Toast.LENGTH_LONG).show();
 
@@ -103,7 +173,7 @@ lateinit var  mRecyclerView: RecyclerView
                     str.append("\n");
                 }
 
-                displaybookingId.text= str;
+
                 Log.d("Response", response.toString());
                 Toast.makeText(this@QueryBooking,str,Toast.LENGTH_LONG).show();
             }
