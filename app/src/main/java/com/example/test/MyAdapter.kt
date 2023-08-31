@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -18,6 +19,7 @@ class MyAdapter(val  context: Context, val userList: List<Property>): RecyclerVi
         var Booking_Details:TextView
 
         var Booking_Purpose:TextView
+        var BookingRoomImage:ImageView;
 
 
 
@@ -31,6 +33,7 @@ class MyAdapter(val  context: Context, val userList: List<Property>): RecyclerVi
             Booking_Details=itemView.findViewById(R.id.Booking_Details)
 
             Booking_Purpose=itemView.findViewById(R.id.Booking_Purpose)
+            BookingRoomImage=itemView.findViewById(R.id.image);
 
 
 
@@ -69,6 +72,7 @@ class MyAdapter(val  context: Context, val userList: List<Property>): RecyclerVi
         holder.Booking_Details.text=userList[position].Booked_Details.toString()
 
         holder.Booking_Purpose.text=userList[position].Booked_Purpose.toString()
+        holder.BookingRoomImage.setImageResource(R.drawable.hall);
 
     }
 

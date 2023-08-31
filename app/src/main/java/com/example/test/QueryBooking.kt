@@ -27,7 +27,7 @@ class QueryBooking : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
    // private lateinit var manager: RecyclerView.LayoutManager
    // private lateinit var myAdapter: RecyclerView.Adapter<*>
-     val BASE_URL = "http://192.168.43.211:9091/";
+     val BASE_URL = "http://192.168.43.211:9091/api/";
     val MOBILE_BASE_URL="https://192.168.43.211/api/";
     val intern_url="https://jsonplaceholder.typicode.com/";
 private  lateinit var apiService:ApiService;

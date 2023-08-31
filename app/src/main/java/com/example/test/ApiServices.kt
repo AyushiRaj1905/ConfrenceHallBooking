@@ -7,7 +7,7 @@ import retrofit2.http.GET
 
 interface ApiService{
 
-    @GET("api/FetchRoomData")
+    @GET("FetchRoomData")
     fun getAllData(): Call<List<Property>>
 
     @GET("posts")
