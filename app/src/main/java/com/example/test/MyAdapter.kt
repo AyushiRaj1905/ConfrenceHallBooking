@@ -65,13 +65,13 @@ class MyAdapter(val  context: Context, val userList: List<Property>): RecyclerVi
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        holder.Booking_ID.text=userList[position].Booking_Id.toString()
+        holder.Booking_ID.text="Booking ID :"+userList[position].Booking_Id.toString()
 
-        holder.booking_date.text=userList[position].Booking_Date.toString()
+        holder.booking_date.text="Booking Date : "+userList[position].Booking_Date.toString()
 
-        holder.Booking_Details.text=userList[position].Booked_Details.toString()
+        holder.Booking_Details.text="Booking Details : "+userList[position].Booked_Details.toString()
 
-        holder.Booking_Purpose.text=userList[position].Booked_Purpose.toString()
+        holder.Booking_Purpose.text="Booking Purpose : "+userList[position].Booked_Purpose.toString()
         holder.BookingRoomImage.setImageResource(R.drawable.hall);
 
     }
