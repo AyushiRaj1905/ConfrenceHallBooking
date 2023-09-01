@@ -23,6 +23,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.lang.StringBuilder
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class QueryBooking : AppCompatActivity() {
     lateinit var  myAdapter: MyAdapter
@@ -78,11 +80,29 @@ lateinit var mQueryBookingButton:Button;
 
         if (!startDate.matches(dateFormat) || !endDate.matches(dateFormat)) {
             // Date format is incorrect
+            Toast.makeText(this@QueryBooking, "Date format is incorrect", Toast.LENGTH_LONG).show()
+            return false
+        }
+
+        val dateFormatter = SimpleDateFormat("dd-MM-yyyy", Locale.US)
+        val parsedStartDate = dateFormatter.parse(startDate)
+        val parsedEndDate = dateFormatter.parse(endDate)
+
+        if (parsedStartDate == null || parsedEndDate == null) {
+            // Error parsing dates
+            Toast.makeText(this@QueryBooking, "Error parsing dates", Toast.LENGTH_LONG).show()
+            return false
+        }
+
+        if (parsedStartDate.after(parsedEndDate)) {
+            // Start date is after end date
+            Toast.makeText(this@QueryBooking, "Start date should be before end date", Toast.LENGTH_LONG).show()
             return false
         }
 
         return true
     }
+
 
     private fun performQueryBooking(startDate: String, endDate: String) {
         val retrofitBuilder = Retrofit.Builder()
