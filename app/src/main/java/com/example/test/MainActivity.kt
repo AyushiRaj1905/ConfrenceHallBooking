@@ -1,6 +1,5 @@
 package com.example.test
 
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -24,6 +23,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnRefreshCaptcha: Button
     private lateinit var captchaChallenge: String
     private lateinit var binding: ActivityMainBinding;
+    private lateinit var  userName:EditText;
+    private lateinit var mEditTextPassword:EditText;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,58 +36,66 @@ class MainActivity : AppCompatActivity() {
         etCaptcha = findViewById(R.id.etCaptcha)
         ivCaptcha = findViewById(R.id.ivCaptcha)
         btnLogin = findViewById(R.id.btn_Login)
+        userName = findViewById(R.id.et_UserName)
+        mEditTextPassword = findViewById(R.id.et_Password)
 
         btnRefreshCaptcha = findViewById(R.id.btnRefreshCaptcha)
         generateCaptchaChallenge();
 
         btnLogin.setOnClickListener {
-            val i = Intent(this, DetailActivity::class.java)
-            startActivity(i)
-            val captchaResponse = etCaptcha.text.toString()
-//            if (captchaResponse == captchaChallenge) {
-//                Toast.makeText(
-//                    this, "Login successful",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//
-//
-//            } else {
-//// CAPTCHA verification failed, show an error message
-//                Toast.makeText(
-//                    this, "CAPTCHA verification failed",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-            //}
+            //Matching user id and password
+            // Declare a HashMap for user IDs and passwords
+            val userCredentials = HashMap<String, String>()
+
+            // Add user IDs and passwords to the HashMap
+            userCredentials["user1"] = "pass1"
+            userCredentials["user2"] = "pass2"
+            userCredentials["user3"] = "pass3"
+            userCredentials["user4"] = "pass4"
+            // Add more user credentials as needed
+
+            // Check if a user ID and password combination is valid
+            val userId = userName.text.toString();
+            val password = mEditTextPassword.text.toString();
+            if (userCredentials.containsKey(userId) && userCredentials[userId] == password) {
+                // Authentication successful
+                // Add your logic here for a valid user
+                val captchaResponse = etCaptcha.text.toString()
+                if (captchaResponse == captchaChallenge) {
+                    val i = Intent(this, DetailActivity::class.java)
+                    startActivity(i)
+                    Toast.makeText(
+                        this, "Login successful",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+
+                } else {
+// CAPTCHA verification failed, show an error message
+                    Toast.makeText(
+                        this, "CAPTCHA verification failed",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+            } else {
+                // Authentication failed
+                // Add your logic here for an invalid user
+                Toast.makeText(this@MainActivity,
+                    "Incorrct Username or Pass",Toast.LENGTH_LONG)
+                    .show();
+
+            }
         }
         btnRefreshCaptcha.setOnClickListener {
 // Refresh the CAPTCHA challenge
             generateCaptchaChallenge()
         }
 
+    }
 
-// CAPTCHA verification failed, show an error message
-
-// Refresh the CAPTCHA challenge
-
-        /* fun initUI(binding: Any) {
-
-             binding.fabBack.setOnClickListener {
-                 // Handle FAB click
-             }
-
-             binding.btnLogin.setOnClickListener {
-                 // Handle Login button click
-             }
-
-             binding.etForgotPassword.setOnClickListener {
-                 // Handle Forgot Password text view click
-             }
-
-             binding.tvSignUp.setOnClickListener {
-                 // Handle Sign Up text view click
-             }
-
-         }*/
+    override fun onStart() {
+        super.onStart()
 
     }
 
@@ -118,7 +127,7 @@ class MainActivity : AppCompatActivity() {
         canvas.drawText(text, 0f, baseline, paint)
         return bitmap;
 
-        /*fun generateCaptcha(n: Int): String {
+        fun generateCaptcha(n: Int): String {
         // Characters to be included
         val chrs = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
@@ -131,7 +140,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         return captcha
-    }*/
+    }
 
     }
 }

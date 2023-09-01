@@ -13,6 +13,8 @@ interface ApiService{
 
     @POST("FetchRoomData2")
     fun postQueryFetchRequest(@Body mQueryBookingDate: QueryBookingDate): Call<List<Property>>
+    @POST("AddBooking")
+    fun addBookingRequest(@Body mAddBookingDataClass: AddBookingDataClass):Call<List<Property>>
 
     @GET("posts")
     fun getPostData():Call<List<DataItem>>
