@@ -37,7 +37,7 @@ class QueryBooking : AppCompatActivity() {
     val intern_url="https://jsonplaceholder.typicode.com/";
 private  lateinit var apiService:ApiService;
     private lateinit var displaybookingId:TextView;
-lateinit var  mRecyclerView: RecyclerView
+lateinit var  mRecyclerView: RecyclerView;
 lateinit var mQueryBookingButton:Button;
     lateinit var mEditTextStartDate:EditText;
     lateinit var mEditTextEndDate: EditText;

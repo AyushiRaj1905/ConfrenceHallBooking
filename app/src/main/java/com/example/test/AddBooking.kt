@@ -99,8 +99,8 @@ class AddBooking : AppCompatActivity() {
             val empName = mEditTextEmployeeName.text.toString()
             val empDesg = mEditTextEmpDesg.text.toString()
             val empDept = mEditTextEmpDept.text.toString()
-            val startTime= mEditText_BookingFromHrs.text.toString();
-            val endTime = mEditText_Booking_to.text.toString();
+            val bookingfrom= mEditText_BookingFromHrs.text.toString();
+            val bookingto = mEditText_Booking_to.text.toString();
             val bookingDate = mEditText_Booking_Date.text.toString()
             val bookingPeriod=mEditText_Booking_Period.text.toString();
             val bookingDetails = mEditText_Booking_Details.text.toString()
@@ -115,14 +115,14 @@ class AddBooking : AppCompatActivity() {
 
             // Display the data in a Toast message (for demonstration purposes)
             val message = "Employee No: $empNo\nEmployee Name: $empName\nConference Room: " +
-                    "$confrenceRoomId\nBooking Date: $bookingDate $startTime:$endTime\n" +
+                    "$confrenceRoomId\nBooking Date: $bookingDate $bookingfrom:$bookingto\n" +
                     "Booking Details: $bookingDetails\nBooking Purpose: $bookingPurpose\nBooking Day: " +
                     "$bookingDate\nParticipant Count: $pCount\n employee Designation : $empDesg\n " +
                     "mployee Department:$empDept"
             Toast.makeText(this@AddBooking, message, Toast.LENGTH_LONG).show()
             Log.d("Emplyee data input\n",message);
             val uniqueID = UUID.randomUUID().toString()
-            val mBookinData= AddBookingDataClass(uniqueID,bookingDate,startTime,endTime,bookingPeriod,
+            val mBookinData= AddBookingDataClass(uniqueID,bookingDate,bookingfrom,bookingto,bookingPeriod,
                 bookingDetails, bookingPurpose, pCount,confrenceRoomId,empNo)
             performAddBooking(mBookinData);
         }
@@ -136,8 +136,8 @@ class AddBooking : AppCompatActivity() {
         val apiService = retrofitBuilder.create(ApiService::class.java)
 
         val call= apiService.addBookingRequest(mBookinData);
-        call.enqueue(object : Callback<List<Property>?> {
-            override fun onResponse(call: Call<List<Property>?>, response: Response<List<Property>?>) {
+        call.enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
                 val responseBody = response.body()!!
 
                 Log.d("Response data",responseBody.toString());
@@ -151,7 +151,7 @@ class AddBooking : AppCompatActivity() {
 
             }
 
-            override fun onFailure(call: Call<List<Property>?>, t: Throwable?) {
+            override fun onFailure(call: Call<String>, t: Throwable?) {
                 if (t != null) {
                     Log.d("retrofit", "call failed"+t.message)
                 }
